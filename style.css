@@ -19,7 +19,7 @@
 }
 
 .practiceText {
- font-size: 85%;
+ font-size:16px;
  width: 85vw;
  height: 10vw;
  position: absolute;
@@ -150,7 +150,7 @@
 
 
 .titlebox {
-  font-size: 90%;
+  font-size:16px;
   width:30vw;
   height: 3vw;
   position:absolute;
