@@ -212,6 +212,7 @@ var chooseButton = function(clicked_id) {
 	currID = parseInt(clicked_id)
 	var roundPoints = 0
 	var cards_to_turn = jsPsych.randomization.repeat(cardArray, 1).slice(0, currID)
+	roundCardArray.push(cards_to_turn)
 	for (var i = 0; i < cards_to_turn.length; i++) {
 		var card_i = cards_to_turn[i]
 		if (whichLossCards.indexOf(card_i) == -1) {
@@ -292,7 +293,8 @@ var numRounds = 10
 var whichRound = 0
 var totalPoints = 0
 var roundOver = 0
-var roundPointsArray = []
+var roundCardArray = [] // create a new array to store the number of cards Ps clicked.
+var roundPointsArray = [] // array to store the round points.
 var prize1 = 0
 var prize2 = 0
 var prize3 = 0
