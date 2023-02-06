@@ -1,0 +1,90 @@
+Qualtrics.SurveyEngine.addOnload(function()
+{
+    /*Place your JavaScript here to run when the page loads*/
+    // Retrieve Qualtrics object and save in qthis
+    var qthis = this;
+    
+    // Hide buttons
+    qthis.hideNextButton();
+
+    /* Change 2: Defining and load required resources */
+    var jslib_url = "https://minwenyang.github.io/qualtrics_columbia_card_task_cold/";
+
+    // the below urls must be accessible with your browser
+    // 'requiredResources' must include all the required JS files
+    var requiredResources = [
+        jslib_url + "js/jquery.min.js",
+		jslib_url + "js/math.min.js",
+		jslib_url + "js/jspsych/jspsych.js",
+		jslib_url + "js/jspsych/plugins/jspsych-text.js",
+		jslib_url + "js/jspsych/poldrack_plugins/jspsych-poldrack-text.js",
+		jslib_url + "js/jspsych/poldrack_plugins/jspsych-poldrack-instructions.js",
+		jslib_url + "js/jspsych/plugins/jspsych-call-function.js",
+		jslib_url + "js/jspsych/poldrack_plugins/jspsych-attention-check.js",
+		jslib_url + "js/jspsych/poldrack_plugins/jspsych-poldrack-single-stim.js",
+		jslib_url + "js/jspsych/plugins/jspsych-survey-text.js",
+		jslib_url + "js/jspsych/poldrack_plugins/jspsych-single-stim-button.js",
+		jslib_url + "js/jspsych/poldrack_plugins/poldrack_utils.js",
+		jslib_url + "experiment_qualtrics.js"
+    ];
+    
+    function loadScript(idx) {
+        console.log("Loading ", requiredResources[idx]);
+        jQuery.getScript(requiredResources[idx], function () {
+            if ((idx + 1) < requiredResources.length) {
+                loadScript(idx + 1);
+            } else {
+                initExp();
+            }
+        });
+    }
+
+    if (window.Qualtrics && (!window.frameElement || window.frameElement.id !== "mobile-preview-view")) {
+        loadScript(0);
+    }
+
+    /* Change 3: Appending the display_stage Div using jQuery */
+    // jQuery is loaded in Qualtrics by default
+    jQuery("<div id = 'display_stage_background'></div>").appendTo('body');
+    jQuery("<div id = 'display_stage'></div>").appendTo('body');  
+    
+    /* Change 4: Wrapping jsPsych.init() in a function */
+    function initExp() {
+        var jspsych_session = []; // this array stores the events we want to run in the experiment_qualtrics
+        jspsych_session.push({
+            timeline: columbia_card_task_cold_experiment
+        });
+        
+        jsPsych.init({
+            timeline: jspsych_session,
+            display_element: "getDisplayElement",
+            fullscreen: true,
+            on_finish: function(){
+                // store data 
+                //Qualtrics.SurveyEngine.setEmbeddedData("cardnum", roundCardArray); // save the number of clicks
+                //Qualtrics.SurveyEngine.setEmbeddedData("point", roundPointsArray); // save the number of points earned
+                
+                // clear the stage
+                jQuery('.display_stage').remove();
+                jQuery('.display_stage_background').remove();
+
+                // simulate click on Qualtrics "next" button, making use of the Qualtrics JS API
+                qthis.clickNextButton();
+            }
+
+     });
+    }
+
+});
+
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+    /*Place your JavaScript here to run when the page is fully displayed*/
+
+});
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+    /*Place your JavaScript here to run when the page is unloaded*/
+
+});
